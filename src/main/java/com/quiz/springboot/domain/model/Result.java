@@ -1,4 +1,4 @@
-package com.quiz.springboot.domain.Model;
+package com.quiz.springboot.domain.model;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -7,8 +7,8 @@ import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 
 @Entity
-@Table(name = "users")
-public class Game {
+@Table(name = "results")
+public class Result {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,10 +24,10 @@ public class Game {
     @DateTimeFormat
     private Date date;
 
-    public Game() {
+    public Result() {
     }
 
-    public Game(Long id, User user, @NotEmpty Integer points, Date date) {
+    public Result(Long id, User user, @NotEmpty Integer points, Date date) {
         this.id = id;
         this.user = user;
         this.points = points;
@@ -68,7 +68,7 @@ public class Game {
 
     @Override
     public String toString() {
-        return "Game{" +
+        return "Result{" +
                 "id=" + id +
                 ", user=" + user +
                 ", points=" + points +

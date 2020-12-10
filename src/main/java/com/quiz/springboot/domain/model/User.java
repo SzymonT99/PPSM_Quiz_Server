@@ -1,8 +1,4 @@
-package com.quiz.springboot.domain.Model;
-
-import com.quiz.springboot.domain.Model.Game;
-import com.quiz.springboot.domain.Model.Roles;
-import com.quiz.springboot.domain.Model.Statistics;
+package com.quiz.springboot.domain.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -23,7 +19,6 @@ public class User {
     private Statistics stats;
 
     @NotEmpty
-    @Size(min = 4, max = 20)
     private String login;
 
     @NotEmpty
@@ -31,7 +26,6 @@ public class User {
     private String email;
 
     @NotEmpty
-    @Size(min = 10, max = 50)
     private String password;
 
     @Enumerated(EnumType.STRING)
@@ -44,7 +38,7 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
-    private Set<Game> games;
+    private Set<Result> games;
 
     public User() {
     }
@@ -126,11 +120,11 @@ public class User {
         this.incorrectLoginCounter = incorrectLoginCounter;
     }
 
-    public Set<Game> getGames() {
+    public Set<Result> getGames() {
         return games;
     }
 
-    public void setGames(Set<Game> games) {
+    public void setGames(Set<Result> games) {
         this.games = games;
     }
 }

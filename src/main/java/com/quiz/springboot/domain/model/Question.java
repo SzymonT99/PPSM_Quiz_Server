@@ -1,4 +1,4 @@
-package com.quiz.springboot.domain.Model;
+package com.quiz.springboot.domain.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -15,22 +15,30 @@ public class Question {
     private String content;
 
     @NotEmpty
+    @Column(name = "answer_a")
     private String answerA;
 
     @NotEmpty
+    @Column(name = "answer_b")
     private String answerB;
 
     @NotEmpty
+    @Column(name = "answer_c")
     private String answerC;
 
     @NotEmpty
+    @Column(name = "answer_d")
     private String answerD;
 
     @NotEmpty
+    @Column(name = "correct_answer")
     private Integer correctAnswer;
 
     @NotEmpty
     private Boolean available;
+
+    @NotEmpty
+    private Integer points;
 
 
     public Question() {
@@ -38,7 +46,7 @@ public class Question {
 
     public Question(Long id, @NotEmpty String content, @NotEmpty String answerA, @NotEmpty String answerB,
                     @NotEmpty String answerC, @NotEmpty String answerD, @NotEmpty Integer correctAnswer,
-                    @NotEmpty Boolean available) {
+                    @NotEmpty Boolean available, @NotEmpty Integer points) {
         this.id = id;
         this.content = content;
         this.answerA = answerA;
@@ -47,6 +55,7 @@ public class Question {
         this.answerD = answerD;
         this.correctAnswer = correctAnswer;
         this.available = available;
+        this.points = points;
     }
 
     public Long getId() {
@@ -113,6 +122,14 @@ public class Question {
         this.available = available;
     }
 
+    public Integer getPoints() {
+        return points;
+    }
+
+    public void setPoints(Integer points) {
+        this.points = points;
+    }
+
     @Override
     public String toString() {
         return "Question{" +
@@ -124,6 +141,7 @@ public class Question {
                 ", answerD='" + answerD + '\'' +
                 ", correctAnswer=" + correctAnswer +
                 ", available=" + available +
+                ", points=" + points +
                 '}';
     }
 }

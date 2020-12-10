@@ -1,4 +1,4 @@
-package com.quiz.springboot.domain.Model;
+package com.quiz.springboot.domain.model;
 
 public enum Roles {
     ROLE_USER,
