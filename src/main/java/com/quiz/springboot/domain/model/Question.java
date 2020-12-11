@@ -2,6 +2,7 @@ package com.quiz.springboot.domain.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "questions")
@@ -34,8 +35,8 @@ public class Question {
     @Column(name = "correct_answer")
     private Integer correctAnswer;
 
-    @NotEmpty
-    private Boolean available;
+    @NotNull
+    private boolean available;
 
     private Integer points;
 

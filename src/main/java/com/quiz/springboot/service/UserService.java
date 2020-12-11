@@ -4,11 +4,11 @@ import com.quiz.springboot.domain.dto.*;
 import com.quiz.springboot.domain.model.AuthorizationStatus;
 import com.quiz.springboot.domain.model.User;
 
-import java.util.Optional;
+import java.util.List;
 
 public interface UserService {
 
-    User getUserById(Long id);
+    List<User> getUsers();
 
     User getUserByLogin(String login);
 
@@ -16,7 +16,7 @@ public interface UserService {
 
     AuthorizationStatus checkLogin(UserVerificationDto userVerification);
 
-    void updateUserLogin(ChangedUserLoginDto changedUserLogin);
+    boolean updateUserLogin(ChangedUserLoginDto changedUserLogin);
 
     boolean updateUserPassword(ChangedUserPasswordDto changedUserPassword);
 

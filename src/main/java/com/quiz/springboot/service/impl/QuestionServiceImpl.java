@@ -45,4 +45,9 @@ public class QuestionServiceImpl implements QuestionService {
             updatedQuestion.setPoints(point);
         }
     }
+
+    @Override
+    public void deleteQuestion(Long id_question) {
+
+    }
 }

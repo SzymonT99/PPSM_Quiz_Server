@@ -11,6 +11,9 @@ import com.quiz.springboot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -23,8 +26,9 @@ public class UserServiceImpl implements UserService {
     StatisticsRepository statisticsRepository;
 
     @Override
-    public User getUserById(Long id) {
-        return userRepository.findById(id).orElse(null);
+    public List<User> getUsers() {
+
+        return userRepository.findAll();
     }
 
     @Override
@@ -55,16 +59,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public AuthorizationStatus checkLogin(UserVerificationDto userVerification) {
 
-        if (!userRepository.existsByLogin(userVerification.getLogin())) {
-
-            if (!userVerification.getPassword().equals(userVerification.getRepeatedPassword())) {
-                return AuthorizationStatus.UNAUTHORIZED;
-            }
+        if (userRepository.existsByLogin(userVerification.getLogin())) {
 
             User user = userRepository.findByLogin(userVerification.getLogin());
 
             if (!user.getActive()) {
                 return AuthorizationStatus.FORBIDDEN;
+            }
+
+            if (!userVerification.getPassword().equals(userVerification.getRepeatedPassword())) {
+
+                user.setIncorrectLoginCounter(user.getIncorrectLoginCounter() + 1);
+                user.setActive(user.getIncorrectLoginCounter() < MAX_LOGIN_ATTEMPTS);
+                userRepository.save(user);
+
+                return AuthorizationStatus.UNAUTHORIZED;
             }
 
             if (!user.getPassword().equals(userVerification.getPassword())) {
@@ -89,12 +98,20 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void updateUserLogin(ChangedUserLoginDto changedUserLogin) {
+    public boolean updateUserLogin(ChangedUserLoginDto changedUserLogin) {
 
-        User user = userRepository.findByLogin(changedUserLogin.getOldLogin());
-        user.setLogin(changedUserLogin.getNewLogin());
+        if (changedUserLogin.getOldLogin() != null && changedUserLogin.getNewLogin() != null){
 
-        userRepository.save(user);
+            User user = userRepository.findByLogin(changedUserLogin.getOldLogin());
+            user.setLogin(changedUserLogin.getNewLogin());
+
+            userRepository.save(user);
+
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     @Override
@@ -114,6 +131,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public boolean deleteUser(DeleteUserDto deleteUser) {
 
         User user = userRepository.findByLogin(deleteUser.getLogin());

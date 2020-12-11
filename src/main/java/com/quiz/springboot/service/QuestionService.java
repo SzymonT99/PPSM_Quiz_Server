@@ -9,4 +9,6 @@ public interface QuestionService {
     void specifyAvailability(Long id_question);
 
     void specifyWeight(Long id_question, Integer point);
+
+    void deleteQuestion(Long id_question);
 }
