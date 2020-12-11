@@ -2,6 +2,7 @@ package com.quiz.springboot.service;
 
 import com.quiz.springboot.domain.dto.*;
 import com.quiz.springboot.domain.model.AuthorizationStatus;
+import com.quiz.springboot.domain.model.Roles;
 import com.quiz.springboot.domain.model.User;
 
 import java.util.List;
@@ -21,4 +22,6 @@ public interface UserService {
     boolean updateUserPassword(ChangedUserPasswordDto changedUserPassword);
 
     boolean deleteUser (DeleteUserDto deleteUser);
+
+    Roles checkRole(String login);
 }

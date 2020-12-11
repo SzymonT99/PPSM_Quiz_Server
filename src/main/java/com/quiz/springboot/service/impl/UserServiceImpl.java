@@ -100,7 +100,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean updateUserLogin(ChangedUserLoginDto changedUserLogin) {
 
-        if (changedUserLogin.getOldLogin() != null && changedUserLogin.getNewLogin() != null){
+        if (changedUserLogin.getOldLogin() != null && changedUserLogin.getNewLogin() != null) {
 
             User user = userRepository.findByLogin(changedUserLogin.getOldLogin());
             user.setLogin(changedUserLogin.getNewLogin());
@@ -108,8 +108,7 @@ public class UserServiceImpl implements UserService {
             userRepository.save(user);
 
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -119,10 +118,9 @@ public class UserServiceImpl implements UserService {
 
         User user = userRepository.findByLogin(changedUserPassword.getLogin());
 
-        if (!user.getPassword().equals(changedUserPassword.getOldPassword())){
+        if (!user.getPassword().equals(changedUserPassword.getOldPassword())) {
             return false;
-        }
-        else {
+        } else {
 
             user.setPassword(changedUserPassword.getNewPassword());
             userRepository.save(user);
@@ -136,15 +134,28 @@ public class UserServiceImpl implements UserService {
 
         User user = userRepository.findByLogin(deleteUser.getLogin());
 
-        if (!user.getPassword().equals(deleteUser.getPassword())){
+        if (!user.getPassword().equals(deleteUser.getPassword())) {
 
             return false;
-        }
-        else {
+        } else {
 
             userRepository.deleteByLogin(deleteUser.getLogin());
             return true;
 
+        }
+    }
+
+    @Override
+    public Roles checkRole(String login) {
+        if (login != null) {
+
+            User user = userRepository.findByLogin(login);
+            return user.getRole();
+
+        }
+        else{
+
+            return null;
         }
     }
 }

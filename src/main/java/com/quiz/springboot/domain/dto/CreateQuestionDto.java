@@ -2,6 +2,7 @@ package com.quiz.springboot.domain.dto;
 
 public class CreateQuestionDto {
 
+    private String login;
     private String content;
     private String answerA;
     private String answerB;
@@ -12,13 +13,22 @@ public class CreateQuestionDto {
     public CreateQuestionDto() {
     }
 
-    public CreateQuestionDto(String content, String answerA, String answerB, String answerC, String answerD, Integer correctAnswer) {
+    public CreateQuestionDto(String login, String content, String answerA, String answerB, String answerC, String answerD, Integer correctAnswer) {
+        this.login = login;
         this.content = content;
         this.answerA = answerA;
         this.answerB = answerB;
         this.answerC = answerC;
         this.answerD = answerD;
         this.correctAnswer = correctAnswer;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getContent() {
@@ -68,4 +78,5 @@ public class CreateQuestionDto {
     public void setCorrectAnswer(Integer correctAnswer) {
         this.correctAnswer = correctAnswer;
     }
+
 }

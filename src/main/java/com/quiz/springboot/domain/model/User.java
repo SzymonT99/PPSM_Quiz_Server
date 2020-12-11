@@ -19,14 +19,14 @@ public class User {
     @JoinColumn(name = "stats_id")
     private Statistics stats;
 
-    @NotEmpty
+    @NotNull
     private String login;
 
-    @NotEmpty
+    @NotNull
     @Email
     private String email;
 
-    @NotEmpty
+    @NotNull
     private String password;
 
     @Enumerated(EnumType.STRING)
@@ -35,6 +35,7 @@ public class User {
     @NotNull
     private boolean active;
 
+    @NotNull
     private Integer incorrectLoginCounter;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY,
@@ -44,9 +45,9 @@ public class User {
     public User() {
     }
 
-    public User(Statistics stats, @NotEmpty @Size(min = 4, max = 20) String login,
-                @NotEmpty @Email String email, @NotEmpty @Size(min = 10, max = 50) String password,
-                Roles role, @NotEmpty Boolean active, Integer incorrectLoginCounter) {
+    public User(Statistics stats, @NotNull @Size(min = 4, max = 20) String login,
+                @NotNull @Email String email, @NotNull @Size(min = 10, max = 50) String password,
+                Roles role, @NotNull Boolean active, @NotNull Integer incorrectLoginCounter) {
         this.stats = stats;
         this.login = login;
         this.email = email;

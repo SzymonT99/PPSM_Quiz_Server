@@ -7,10 +7,12 @@ import java.util.List;
 
 public interface ResultService {
 
+    List<Result> getResults();
+
     List<Result> getBestResultUsers();
 
     void saveCurrentResult(UserResultDto userResult);
 
-    void deleteResultById(Long id);
+    void deleteResult(Long id);
 
 }

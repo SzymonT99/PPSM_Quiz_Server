@@ -4,6 +4,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
@@ -18,7 +19,7 @@ public class Result {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @NotEmpty
+    @NotNull
     private Integer points;
 
     @DateTimeFormat
@@ -27,7 +28,7 @@ public class Result {
     public Result() {
     }
 
-    public Result(User user, @NotEmpty Integer points, Date date) {
+    public Result(User user, @NotNull Integer points, Date date) {
         this.user = user;
         this.points = points;
         this.date = date;

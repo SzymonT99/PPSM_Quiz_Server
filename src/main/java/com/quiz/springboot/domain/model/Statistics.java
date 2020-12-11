@@ -1,6 +1,7 @@
 package com.quiz.springboot.domain.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "statistics")
@@ -10,21 +11,27 @@ public class Statistics {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     @Column(name="games_number")
     private Integer gamesNumber;
 
+    @NotNull
     @Column(name="correct_answer")
     private Integer correctAnswer;
 
+    @NotNull
     @Column(name="incorrect_answer")
     private Integer incorrectAnswer;
 
+    @NotNull
     @Column(name="added_questions")
     private Integer addedQuestions;
 
+    @NotNull
     @Column(name="current_rank")
     private Integer currentRank;
 
+    @NotNull
     @OneToOne(mappedBy = "stats", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
     private User user;
@@ -32,7 +39,7 @@ public class Statistics {
     public Statistics() {
     }
 
-    public Statistics(Integer gamesNumber, Integer correctAnswer, Integer incorrectAnswer, Integer addedQuestions, Integer currentRank) {
+    public Statistics(@NotNull Integer gamesNumber, @NotNull Integer correctAnswer, @NotNull Integer incorrectAnswer, @NotNull Integer addedQuestions, @NotNull Integer currentRank) {
         this.gamesNumber = gamesNumber;
         this.correctAnswer = correctAnswer;
         this.incorrectAnswer = incorrectAnswer;

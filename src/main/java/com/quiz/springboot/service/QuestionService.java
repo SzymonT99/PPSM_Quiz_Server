@@ -1,8 +1,13 @@
 package com.quiz.springboot.service;
 
 import com.quiz.springboot.domain.dto.CreateQuestionDto;
+import com.quiz.springboot.domain.model.Question;
+
+import java.util.List;
 
 public interface QuestionService {
+
+    List<Question> getQuestions();
 
     boolean addQuestion(CreateQuestionDto createQuestion);
 

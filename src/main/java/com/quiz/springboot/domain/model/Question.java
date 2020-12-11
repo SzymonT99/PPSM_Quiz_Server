@@ -12,26 +12,26 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty
+    @NotNull
     private String content;
 
     @NotEmpty
     @Column(name = "answer_a")
     private String answerA;
 
-    @NotEmpty
+    @NotNull
     @Column(name = "answer_b")
     private String answerB;
 
-    @NotEmpty
+    @NotNull
     @Column(name = "answer_c")
     private String answerC;
 
-    @NotEmpty
+    @NotNull
     @Column(name = "answer_d")
     private String answerD;
 
-    @NotEmpty
+    @NotNull
     @Column(name = "correct_answer")
     private Integer correctAnswer;
 
@@ -44,9 +44,9 @@ public class Question {
     public Question() {
     }
 
-    public Question(@NotEmpty String content, @NotEmpty String answerA, @NotEmpty String answerB,
-                    @NotEmpty String answerC, @NotEmpty String answerD, @NotEmpty Integer correctAnswer,
-                    @NotEmpty Boolean available, Integer points) {
+    public Question(@NotNull String content, @NotNull String answerA, @NotNull String answerB,
+                    @NotNull String answerC, @NotNull String answerD, @NotNull Integer correctAnswer,
+                    @NotNull Boolean available, Integer points) {
         this.content = content;
         this.answerA = answerA;
         this.answerB = answerB;
