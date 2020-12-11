@@ -15,7 +15,7 @@ public class User {
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "stats_id", referencedColumnName = "id")
+    @JoinColumn(name = "stats_id")
     private Statistics stats;
 
     @NotEmpty
@@ -43,10 +43,9 @@ public class User {
     public User() {
     }
 
-    public User(Long id, Statistics stats, @NotEmpty @Size(min = 4, max = 20) String login,
+    public User(Statistics stats, @NotEmpty @Size(min = 4, max = 20) String login,
                 @NotEmpty @Email String email, @NotEmpty @Size(min = 10, max = 50) String password,
                 Roles role, @NotEmpty Boolean active, Integer incorrectLoginCounter) {
-        this.id = id;
         this.stats = stats;
         this.login = login;
         this.email = email;

@@ -1,14 +1,14 @@
 package com.quiz.springboot.domain.dto;
 
-public class ChangedLoginDto {
+public class ChangedUserLoginDto {
 
     private String oldLogin;
     private String newLogin;
 
-    public ChangedLoginDto() {
+    public ChangedUserLoginDto() {
     }
 
-    public ChangedLoginDto(String oldLogin, String newLogin) {
+    public ChangedUserLoginDto(String oldLogin, String newLogin) {
         this.oldLogin = oldLogin;
         this.newLogin = newLogin;
     }

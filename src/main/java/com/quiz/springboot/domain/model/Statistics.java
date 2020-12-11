@@ -32,8 +32,7 @@ public class Statistics {
     public Statistics() {
     }
 
-    public Statistics(Long id, Integer gamesNumber, Integer correctAnswer, Integer incorrectAnswer, Integer addedQuestions, Integer currentRank) {
-        this.id = id;
+    public Statistics(Integer gamesNumber, Integer correctAnswer, Integer incorrectAnswer, Integer addedQuestions, Integer currentRank) {
         this.gamesNumber = gamesNumber;
         this.correctAnswer = correctAnswer;
         this.incorrectAnswer = incorrectAnswer;

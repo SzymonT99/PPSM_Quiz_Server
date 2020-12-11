@@ -37,17 +37,15 @@ public class Question {
     @NotEmpty
     private Boolean available;
 
-    @NotEmpty
     private Integer points;
 
 
     public Question() {
     }
 
-    public Question(Long id, @NotEmpty String content, @NotEmpty String answerA, @NotEmpty String answerB,
+    public Question(@NotEmpty String content, @NotEmpty String answerA, @NotEmpty String answerB,
                     @NotEmpty String answerC, @NotEmpty String answerD, @NotEmpty Integer correctAnswer,
-                    @NotEmpty Boolean available, @NotEmpty Integer points) {
-        this.id = id;
+                    @NotEmpty Boolean available, Integer points) {
         this.content = content;
         this.answerA = answerA;
         this.answerB = answerB;

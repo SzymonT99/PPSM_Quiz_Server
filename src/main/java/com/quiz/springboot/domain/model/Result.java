@@ -27,8 +27,7 @@ public class Result {
     public Result() {
     }
 
-    public Result(Long id, User user, @NotEmpty Integer points, Date date) {
-        this.id = id;
+    public Result(User user, @NotEmpty Integer points, Date date) {
         this.user = user;
         this.points = points;
         this.date = date;
