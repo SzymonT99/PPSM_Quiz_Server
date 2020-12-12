@@ -9,11 +9,14 @@ import com.quiz.springboot.repository.StatisticsRepository;
 import com.quiz.springboot.repository.UserRepository;
 import com.quiz.springboot.service.ResultService;
 import com.quiz.springboot.service.StatisticsService;
+import jdk.nashorn.internal.objects.NativeJSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,10 +38,31 @@ public class ResultServiceImpl implements ResultService {
 
     @Override
     public List<Result> getBestResultUsers() {
-        List<Result> ranking = resultRepository.findBestResultUsers().stream()
-                .sorted(Comparator.comparing(Result::getPoints)).collect(Collectors.toList());
+//        List<Result> ranking = resultRepository.findBestResultUsers().stream()
+//                .sorted(Comparator.comparing(Result::getPoints)).collect(Collectors.toList());
+//
+//        return ranking;
 
-        return ranking;
+        List<Result> ranking = new ArrayList<>();
+        List<Result> allResults = resultRepository.findAll();
+        Map<String, List<Result>> userResults =
+                allResults.stream().collect(Collectors.groupingBy(w -> w.getUser().getLogin()));
+
+        for (String user : userResults.keySet()) {
+
+            Result bestUserResult = userResults.get(user).get(0);
+            for (Result result : userResults.get(user)) {
+
+                if (result.getPoints() > bestUserResult.getPoints()) {
+                    bestUserResult = result;
+                }
+            }
+            ranking.add(bestUserResult);
+
+        }
+
+        return ranking.stream()
+                .sorted(Comparator.comparing(Result::getPoints).reversed()).collect(Collectors.toList());
     }
 
     @Override
@@ -51,7 +75,8 @@ public class ResultServiceImpl implements ResultService {
         Statistics statistics = user.getStats();
         statisticsService.updateNumberCorrectQuestions(statistics, userResult.getCorrectAnswer());
         statisticsService.updateNumberIncorrectQuestions(statistics, userResult.getIncorrectAnswer());
-        statisticsService.updateUserRanking(statistics, userResult.getLogin());
+        statisticsService.updateNumberGames(statistics);
+        statisticsService.updateRanking();
 
     }
 

@@ -10,9 +10,9 @@ import java.util.List;
 @Repository
 public interface ResultRepository extends JpaRepository <Result, Long> {
 
-    @Query("SELECT new com.quiz.springboot.domain.model.Result(r.user_id, MAX(r.points) AS points, MAX(r.date) AS date)" +
+    @Query("SELECT new com.quiz.springboot.domain.model.Result(r.user, MAX(r.points) AS points, MAX(r.date) AS date)" +
             "FROM Result r " +
-            "GROUP BY r.user_id")
+            "GROUP BY r.user")
     List<Result> findBestResultUsers();
 
 }

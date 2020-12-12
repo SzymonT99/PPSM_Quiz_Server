@@ -31,19 +31,29 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
+    public Question getQuestionById(Long id) {
+        return questionRepository.findById(id).orElse(null);
+    }
+
+    @Override
     public boolean addQuestion(CreateQuestionDto createQuestion) {
 
         if (createQuestion.getAnswerA() != null && createQuestion.getAnswerB() != null &&
                 createQuestion.getAnswerC() != null && createQuestion.getAnswerD() != null &&
                 createQuestion.getContent() != null && createQuestion.getCorrectAnswer() != null){
 
-            Question addedQuestion = new Question(createQuestion.getContent(),createQuestion.getAnswerA(), createQuestion.getAnswerB(),
-                    createQuestion.getAnswerC(), createQuestion.getAnswerD(), createQuestion.getCorrectAnswer(), false, 0);
-            questionRepository.save(addedQuestion);
+            if (userRepository.existsByLogin(createQuestion.getLogin())) {
+                Question addedQuestion = new Question(createQuestion.getContent(), createQuestion.getAnswerA(), createQuestion.getAnswerB(),
+                        createQuestion.getAnswerC(), createQuestion.getAnswerD(), createQuestion.getCorrectAnswer(), false, 0);
+                questionRepository.save(addedQuestion);
 
-            User user = userRepository.findByLogin(createQuestion.getLogin());
-            Statistics statistics = user.getStats();
-            statisticsService.updateAddedQuestions(statistics);       // dodano 1 do dodanych pytań
+                User user = userRepository.findByLogin(createQuestion.getLogin());
+                Statistics statistics = user.getStats();
+                statisticsService.updateAddedQuestions(statistics);       // dodano 1 do dodanych pytań
+            }
+            else{
+                return false;
+            }
 
         }
         return false;

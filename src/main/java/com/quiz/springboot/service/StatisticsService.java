@@ -2,6 +2,8 @@ package com.quiz.springboot.service;
 
 import com.quiz.springboot.domain.model.Statistics;
 
+import java.util.List;
+
 public interface StatisticsService {
 
     void updateAddedQuestions(Statistics statistics);
@@ -10,5 +12,11 @@ public interface StatisticsService {
 
     void updateNumberIncorrectQuestions(Statistics statistics, Integer incorrect);
 
-    void updateUserRanking(Statistics statistics, String login);
+    void updateNumberGames(Statistics statistics);
+
+    Statistics getUserStatistics(Long id);
+
+    List<Statistics> getStatistics();
+
+    void updateRanking();
 }

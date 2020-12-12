@@ -3,6 +3,7 @@ package com.quiz.springboot.rest;
 
 import com.quiz.springboot.domain.dto.*;
 import com.quiz.springboot.domain.model.AuthorizationStatus;
+import com.quiz.springboot.domain.model.Roles;
 import com.quiz.springboot.domain.model.User;
 import com.quiz.springboot.service.UserService;
 import org.slf4j.Logger;
@@ -25,7 +26,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/create-user")
-    public ResponseEntity<Void> createUser(@Valid @RequestBody CreateUserDto createUserDto) {
+    public ResponseEntity<Void> createUser(@Valid @RequestBody CreateUserDto createUserDto){
 
         LOGGER.info("--- login: {}", createUserDto.getLogin());
         LOGGER.info("--- e-mail: {}", createUserDto.getEmail());
@@ -37,14 +38,16 @@ public class UserController {
     }
 
     @PostMapping("/user/login")
-    public ResponseEntity<Void> authorizeUser(@RequestBody UserVerificationDto userVerificationDto) {
+    public ResponseEntity<?> authorizeUser(@RequestBody UserVerificationDto userVerificationDto) {
 
         LOGGER.info("--- check login data: {}", userVerificationDto.getLogin());
 
         AuthorizationStatus status = userService.checkLogin(userVerificationDto);
 
+        Roles role = userService.checkRole(userVerificationDto.getLogin());
+
         if (status == AuthorizationStatus.ACCESS) {
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(role ,HttpStatus.OK);
         } else if (status == AuthorizationStatus.UNAUTHORIZED) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         } else {
@@ -53,7 +56,7 @@ public class UserController {
 
     }
 
-    @PutMapping("user-update/login")
+    @PutMapping("/user-update/login")
     public ResponseEntity<Void> updateLogin(@Valid @RequestBody ChangedUserLoginDto changedUserLoginDto) {
 
         LOGGER.info("--- old login: {}", changedUserLoginDto.getOldLogin());
@@ -66,7 +69,7 @@ public class UserController {
                 : new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
-    @PutMapping("user-update/password")
+    @PutMapping("/user-update/password")
     public ResponseEntity<Void> updatePassword(@Valid @RequestBody ChangedUserPasswordDto changedUserLoginDto) {
 
         LOGGER.info("--- old login: {}", changedUserLoginDto.getLogin());
@@ -78,7 +81,7 @@ public class UserController {
                 : new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
-    @DeleteMapping("delete-user")
+    @DeleteMapping("/delete-user")
     public ResponseEntity<Void> deleteUser(@RequestBody DeleteUserDto deleteUserDto) {
 
         boolean deletedStatus = userService.deleteUser(deleteUserDto);
@@ -93,8 +96,6 @@ public class UserController {
 
         return new ResponseEntity<>(userService.getUsers(), HttpStatus.OK);
     }
-
-
 
 }
 

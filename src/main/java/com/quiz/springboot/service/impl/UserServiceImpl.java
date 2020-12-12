@@ -11,7 +11,11 @@ import com.quiz.springboot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import javax.transaction.Transactional;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import java.util.List;
 
 @Service
@@ -28,7 +32,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getUsers() {
 
-        return userRepository.findAll();
+        return  userRepository.findAll();
     }
 
     @Override
@@ -37,15 +41,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean registerUser(CreateUserDto createUser) {
+    public User getUserById(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public boolean registerUser(CreateUserDto createUser){
 
         if (createUser.getLogin() != null && createUser.getEmail() != null && createUser.getPassword() != null) {
 
             Statistics initStatistics = new Statistics(0, 0, 0, 0, 0);
-            statisticsRepository.save(initStatistics);
 
-            User user = new User(initStatistics, createUser.getLogin(), createUser.getEmail(), createUser.getPassword(),
+            BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+
+            User user = new User(createUser.getLogin(), createUser.getEmail(), bCryptPasswordEncoder.encode(createUser.getPassword()),
                     Roles.ROLE_USER, true, 0);
+
+            initStatistics.setUser(user);
+            user.setStats(initStatistics);
 
             userRepository.save(user);
 
@@ -57,7 +70,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public AuthorizationStatus checkLogin(UserVerificationDto userVerification) {
+    public AuthorizationStatus checkLogin(UserVerificationDto userVerification){
 
         if (userRepository.existsByLogin(userVerification.getLogin())) {
 
@@ -76,7 +89,12 @@ public class UserServiceImpl implements UserService {
                 return AuthorizationStatus.UNAUTHORIZED;
             }
 
-            if (!user.getPassword().equals(userVerification.getPassword())) {
+            BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+            System.out.println("=======================");
+            System.out.println(bCryptPasswordEncoder.matches(userVerification.getPassword(), user.getPassword()));
+
+
+            if (!bCryptPasswordEncoder.matches(userVerification.getPassword(), user.getPassword())) {
 
                 user.setIncorrectLoginCounter(user.getIncorrectLoginCounter() + 1);
                 user.setActive(user.getIncorrectLoginCounter() < MAX_LOGIN_ATTEMPTS);
@@ -85,7 +103,7 @@ public class UserServiceImpl implements UserService {
                 return AuthorizationStatus.UNAUTHORIZED;
             }
 
-            if (user.getPassword().equals(userVerification.getPassword()) && user.getIncorrectLoginCounter() < MAX_LOGIN_ATTEMPTS) {
+            if (bCryptPasswordEncoder.matches(userVerification.getPassword(), user.getPassword()) && user.getIncorrectLoginCounter() < MAX_LOGIN_ATTEMPTS) {
                 user.setIncorrectLoginCounter(0);
                 userRepository.save(user);
 

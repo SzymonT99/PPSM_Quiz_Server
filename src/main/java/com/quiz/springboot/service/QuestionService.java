@@ -9,6 +9,8 @@ public interface QuestionService {
 
     List<Question> getQuestions();
 
+    Question getQuestionById(Long id);
+
     boolean addQuestion(CreateQuestionDto createQuestion);
 
     void specifyAvailability(Long id_question);

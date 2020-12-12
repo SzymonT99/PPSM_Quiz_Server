@@ -1,8 +1,12 @@
 package com.quiz.springboot.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Set;
@@ -15,8 +19,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "stats_id")
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Statistics stats;
 
     @NotNull
@@ -40,15 +45,15 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
-    private Set<Result> games;
+    @JsonIgnore
+    private Set<Result> results;
 
     public User() {
     }
 
-    public User(Statistics stats, @NotNull @Size(min = 4, max = 20) String login,
+    public User(@NotNull @Size(min = 4, max = 20) String login,
                 @NotNull @Email String email, @NotNull @Size(min = 10, max = 50) String password,
                 Roles role, @NotNull Boolean active, @NotNull Integer incorrectLoginCounter) {
-        this.stats = stats;
         this.login = login;
         this.email = email;
         this.password = password;
@@ -121,11 +126,12 @@ public class User {
         this.incorrectLoginCounter = incorrectLoginCounter;
     }
 
-    public Set<Result> getGames() {
-        return games;
+    public Set<Result> getResults() {
+        return results;
     }
 
-    public void setGames(Set<Result> games) {
-        this.games = games;
+    public void setResults(Set<Result> results) {
+        this.results = results;
     }
+
 }

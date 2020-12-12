@@ -13,6 +13,8 @@ public interface UserService {
 
     User getUserByLogin(String login);
 
+    User getUserById(Long id);
+
     boolean registerUser(CreateUserDto createUser);
 
     AuthorizationStatus checkLogin(UserVerificationDto userVerification);
