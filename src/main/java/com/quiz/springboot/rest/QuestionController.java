@@ -46,21 +46,23 @@ public class QuestionController {
                 : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping("/question-accepted")
-    public ResponseEntity<Void> postQuestion(@RequestParam(value = "id", required = true) Long id_question,
-                                             @RequestParam(value = "points", required = true) Integer points) {
+    @PostMapping("/question-accepted/{id}")
+    public ResponseEntity<Void> postQuestion(@PathVariable("id") Long id_question,
+                                             @RequestBody SpecifyQuestionDto specifyQuestionDto) {
 
         LOGGER.info("--- id question: {}", id_question);
-        LOGGER.info("--- points: {}", points);
+        LOGGER.info("--- category: {}", specifyQuestionDto.getCategory());
+        LOGGER.info("--- points: {}", specifyQuestionDto.getPoints());
 
-        questionService.specifyAvailability(id_question);
-        questionService.specifyWeight(id_question, points);
+        boolean status = questionService.specifyQuestion(id_question, specifyQuestionDto);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return status
+                ? new ResponseEntity<>(HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping("/delete-question/{id}")
-    public ResponseEntity<Question> deleteQuestion(@PathVariable("id") Long id_question){
+    public ResponseEntity<Question> deleteQuestion(@PathVariable("id") Long id_question) {
 
         Question deletedQuestion = questionService.getQuestionById(id_question);
         questionService.deleteQuestion(id_question);

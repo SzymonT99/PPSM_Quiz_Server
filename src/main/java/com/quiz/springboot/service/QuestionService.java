@@ -1,6 +1,7 @@
 package com.quiz.springboot.service;
 
 import com.quiz.springboot.domain.dto.CreateQuestionDto;
+import com.quiz.springboot.domain.dto.SpecifyQuestionDto;
 import com.quiz.springboot.domain.model.Question;
 
 import java.util.List;
@@ -13,9 +14,7 @@ public interface QuestionService {
 
     boolean addQuestion(CreateQuestionDto createQuestion);
 
-    void specifyAvailability(Long id_question);
-
-    void specifyWeight(Long id_question, Integer point);
+    boolean specifyQuestion(Long id_question, SpecifyQuestionDto specifyQuestionDto);
 
     void deleteQuestion(Long id_question);
 }

@@ -12,8 +12,10 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     private String content;
+
+    @NotNull
+    private String category;
 
     @NotEmpty
     @Column(name = "answer_a")
@@ -44,10 +46,12 @@ public class Question {
     public Question() {
     }
 
-    public Question(@NotNull String content, @NotNull String answerA, @NotNull String answerB,
-                    @NotNull String answerC, @NotNull String answerD, @NotNull Integer correctAnswer,
-                    @NotNull Boolean available, Integer points) {
+    public Question(@NotNull String content,String category, @NotEmpty String answerA,
+                    @NotNull String answerB, @NotNull String answerC, @NotNull String answerD,
+                    @NotNull Integer correctAnswer, @NotNull boolean available, Integer points) {
+        this.id = id;
         this.content = content;
+        this.category = category;
         this.answerA = answerA;
         this.answerB = answerB;
         this.answerC = answerC;
@@ -71,6 +75,14 @@ public class Question {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getAnswerA() {
@@ -113,11 +125,11 @@ public class Question {
         this.correctAnswer = correctAnswer;
     }
 
-    public Boolean getAvailable() {
+    public boolean isAvailable() {
         return available;
     }
 
-    public void setAvailable(Boolean available) {
+    public void setAvailable(boolean available) {
         this.available = available;
     }
 

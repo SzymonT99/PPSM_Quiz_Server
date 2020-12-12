@@ -38,10 +38,6 @@ public class ResultServiceImpl implements ResultService {
 
     @Override
     public List<Result> getBestResultUsers() {
-//        List<Result> ranking = resultRepository.findBestResultUsers().stream()
-//                .sorted(Comparator.comparing(Result::getPoints)).collect(Collectors.toList());
-//
-//        return ranking;
 
         List<Result> ranking = new ArrayList<>();
         List<Result> allResults = resultRepository.findAll();

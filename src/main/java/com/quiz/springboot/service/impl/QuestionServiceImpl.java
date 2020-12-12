@@ -1,6 +1,7 @@
 package com.quiz.springboot.service.impl;
 
 import com.quiz.springboot.domain.dto.CreateQuestionDto;
+import com.quiz.springboot.domain.dto.SpecifyQuestionDto;
 import com.quiz.springboot.domain.model.Question;
 import com.quiz.springboot.domain.model.Statistics;
 import com.quiz.springboot.domain.model.User;
@@ -43,7 +44,7 @@ public class QuestionServiceImpl implements QuestionService {
                 createQuestion.getContent() != null && createQuestion.getCorrectAnswer() != null){
 
             if (userRepository.existsByLogin(createQuestion.getLogin())) {
-                Question addedQuestion = new Question(createQuestion.getContent(), createQuestion.getAnswerA(), createQuestion.getAnswerB(),
+                Question addedQuestion = new Question(createQuestion.getContent(), null, createQuestion.getAnswerA(), createQuestion.getAnswerB(),
                         createQuestion.getAnswerC(), createQuestion.getAnswerD(), createQuestion.getCorrectAnswer(), false, 0);
                 questionRepository.save(addedQuestion);
 
@@ -60,23 +61,25 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public void specifyAvailability(Long id_question) {
-        Question updatedQuestion = questionRepository.findById(id_question).orElse(null);
-        if (updatedQuestion != null) {
-            updatedQuestion.setAvailable(true);
-            questionRepository.save(updatedQuestion);
-        }
+    public boolean specifyQuestion(Long id_question, SpecifyQuestionDto specifyQuestionDto) {
 
+        if (specifyQuestionDto.getCategory() != null && specifyQuestionDto.getPoints() != null){
+
+            Question updatedQuestion = questionRepository.findById(id_question).orElse(null);
+            if (updatedQuestion != null) {
+                updatedQuestion.setAvailable(true);
+                updatedQuestion.setCategory(specifyQuestionDto.getCategory());
+                updatedQuestion.setPoints(specifyQuestionDto.getPoints());
+                questionRepository.save(updatedQuestion);
+            }
+            else {
+                return false;
+            }
+
+        }
+        return false;
     }
 
-    @Override
-    public void specifyWeight(Long id_question, Integer point) {
-        Question updatedQuestion = questionRepository.findById(id_question).orElse(null);
-        if (updatedQuestion != null) {
-            updatedQuestion.setPoints(point);
-            questionRepository.save(updatedQuestion);
-        }
-    }
 
     @Override
     public void deleteQuestion(Long id_question) {
