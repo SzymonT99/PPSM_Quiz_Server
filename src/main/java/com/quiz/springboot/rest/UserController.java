@@ -32,13 +32,13 @@ public class UserController {
         LOGGER.info("--- e-mail: {}", createUserDto.getEmail());
         //LOGGER.info("--- password: {}", createUserDto.getPassword());
 
-        return userService.registerUser(createUserDto)
-                ? new ResponseEntity<>(HttpStatus.CREATED)
-                : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        HttpStatus code =  userService.registerUser(createUserDto);
+
+        return new ResponseEntity<>(code);
     }
 
     @PostMapping("/user/login")
-    public ResponseEntity<?> authorizeUser(@RequestBody UserVerificationDto userVerificationDto) {
+    public ResponseEntity<?> authorizeUser(@RequestBody UserAutorizationDto userVerificationDto) {
 
         LOGGER.info("--- check login data: {}", userVerificationDto.getLogin());
 
@@ -49,9 +49,9 @@ public class UserController {
         if (status == AuthorizationStatus.ACCESS) {
             return new ResponseEntity<>(role ,HttpStatus.OK);
         } else if (status == AuthorizationStatus.UNAUTHORIZED) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(role, HttpStatus.UNAUTHORIZED);
         } else {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(role, HttpStatus.FORBIDDEN);
         }
 
     }

@@ -9,6 +9,7 @@ import com.quiz.springboot.repository.StatisticsRepository;
 import com.quiz.springboot.repository.UserRepository;
 import com.quiz.springboot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 
@@ -46,7 +47,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean registerUser(CreateUserDto createUser){
+    public HttpStatus registerUser(CreateUserDto createUser){
+
+        if (userRepository.existsByLogin(createUser.getLogin())){
+            return HttpStatus.FORBIDDEN;
+        }
 
         if (createUser.getLogin() != null && createUser.getEmail() != null && createUser.getPassword() != null) {
 
@@ -62,15 +67,15 @@ public class UserServiceImpl implements UserService {
 
             userRepository.save(user);
 
-            return true;
+            return HttpStatus.CREATED;
         }
 
-        return false;
+        return HttpStatus.BAD_REQUEST;
     }
 
 
     @Override
-    public AuthorizationStatus checkLogin(UserVerificationDto userVerification){
+    public AuthorizationStatus checkLogin(UserAutorizationDto userVerification){
 
         if (userRepository.existsByLogin(userVerification.getLogin())) {
 
@@ -80,19 +85,7 @@ public class UserServiceImpl implements UserService {
                 return AuthorizationStatus.FORBIDDEN;
             }
 
-            if (!userVerification.getPassword().equals(userVerification.getRepeatedPassword())) {
-
-                user.setIncorrectLoginCounter(user.getIncorrectLoginCounter() + 1);
-                user.setActive(user.getIncorrectLoginCounter() < MAX_LOGIN_ATTEMPTS);
-                userRepository.save(user);
-
-                return AuthorizationStatus.UNAUTHORIZED;
-            }
-
             BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-            System.out.println("=======================");
-            System.out.println(bCryptPasswordEncoder.matches(userVerification.getPassword(), user.getPassword()));
-
 
             if (!bCryptPasswordEncoder.matches(userVerification.getPassword(), user.getPassword())) {
 
@@ -167,13 +160,17 @@ public class UserServiceImpl implements UserService {
     public Roles checkRole(String login) {
         if (login != null) {
 
-            User user = userRepository.findByLogin(login);
-            return user.getRole();
+            if (userRepository.existsByLogin(login)){
+                User user = userRepository.findByLogin(login);
+                return user.getRole();
+            }
+            else {
+                return Roles.NONE;
+            }
 
         }
         else{
-
-            return null;
+            return Roles.NONE;
         }
     }
 }

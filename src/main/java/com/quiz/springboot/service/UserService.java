@@ -4,6 +4,7 @@ import com.quiz.springboot.domain.dto.*;
 import com.quiz.springboot.domain.model.AuthorizationStatus;
 import com.quiz.springboot.domain.model.Roles;
 import com.quiz.springboot.domain.model.User;
+import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
@@ -15,9 +16,9 @@ public interface UserService {
 
     User getUserById(Long id);
 
-    boolean registerUser(CreateUserDto createUser);
+    HttpStatus registerUser(CreateUserDto createUser);
 
-    AuthorizationStatus checkLogin(UserVerificationDto userVerification);
+    AuthorizationStatus checkLogin(UserAutorizationDto userVerification);
 
     boolean updateUserLogin(ChangedUserLoginDto changedUserLogin);
 

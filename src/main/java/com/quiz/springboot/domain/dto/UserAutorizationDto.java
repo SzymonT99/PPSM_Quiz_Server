@@ -1,18 +1,16 @@
 package com.quiz.springboot.domain.dto;
 
-public class UserVerificationDto {
+public class UserAutorizationDto {
 
     private String login;
     private String password;
-    private String repeatedPassword;
 
-    public UserVerificationDto() {
+    public UserAutorizationDto() {
     }
 
-    public UserVerificationDto(String login, String password, String repeatedPassword) {
+    public UserAutorizationDto(String login, String password) {
         this.login = login;
         this.password = password;
-        this.repeatedPassword = repeatedPassword;
     }
 
     public String getLogin() {
@@ -31,11 +29,11 @@ public class UserVerificationDto {
         this.password = password;
     }
 
-    public String getRepeatedPassword() {
-        return repeatedPassword;
-    }
-
-    public void setRepeatedPassword(String repeatedPassword) {
-        this.repeatedPassword = repeatedPassword;
+    @Override
+    public String toString() {
+        return "UserAutorizationDto{" +
+                "login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }
