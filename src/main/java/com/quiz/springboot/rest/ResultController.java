@@ -1,6 +1,7 @@
 package com.quiz.springboot.rest;
 
 
+import com.quiz.springboot.domain.dto.QuizResult;
 import com.quiz.springboot.domain.dto.UserResultDto;
 import com.quiz.springboot.domain.model.Result;
 import com.quiz.springboot.service.ResultService;
@@ -24,9 +25,9 @@ public class ResultController {
 
 
     @GetMapping("/ranking")
-    public ResponseEntity<List<Result>> getRanking() {
+    public ResponseEntity<List<QuizResult>> getRanking() {
 
-        return new ResponseEntity<>(resultService.getBestResultUsers(), HttpStatus.OK);
+        return new ResponseEntity<>(resultService.getRanking(), HttpStatus.OK);
     }
 
     @GetMapping("/results")
@@ -39,7 +40,6 @@ public class ResultController {
     public ResponseEntity<Void> saveResult(@RequestBody UserResultDto userResultDto){
 
         LOGGER.info("---  user login: {}", userResultDto.getLogin());
-        LOGGER.info("---  game date: {}", userResultDto.getDate());
         LOGGER.info("---  number of correct answers: {}", userResultDto.getCorrectAnswer());
         LOGGER.info("---  number of incorrect answers: {}", userResultDto.getIncorrectAnswer());
 

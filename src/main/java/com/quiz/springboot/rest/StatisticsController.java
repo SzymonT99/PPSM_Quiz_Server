@@ -28,11 +28,12 @@ public class StatisticsController {
 
         return new ResponseEntity<>(statisticsService.getStatistics(), HttpStatus.OK);
     }
-    @GetMapping("/statistics/{id}")
+    @GetMapping("/statistics/{name}")
 
-    public ResponseEntity<?> getUserStatistics(@PathVariable("id") Long userId) {
+    public ResponseEntity<?> getUserStatistics(@PathVariable("name") String nick) {
 
-        Statistics statistics = statisticsService.getUserStatistics(userId);
+        LOGGER.info("--- stats for user: {}", nick);
+        Statistics statistics = statisticsService.getUserStatistics(nick);
         return statistics != null
                 ? new ResponseEntity<>(statistics, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);

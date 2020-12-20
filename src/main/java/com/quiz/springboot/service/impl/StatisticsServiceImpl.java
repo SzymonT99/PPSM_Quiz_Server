@@ -55,10 +55,10 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
-    public Statistics getUserStatistics(Long id) {
+    public Statistics getUserStatistics(String nick) {
 
-        if (userRepository.existsById(id)) {
-            User user = userService.getUserById(id);
+        if (userRepository.existsByLogin(nick)) {
+            User user = userService.getUserByLogin(nick);
             Statistics statistics = user.getStats();
             return statistics;
         }

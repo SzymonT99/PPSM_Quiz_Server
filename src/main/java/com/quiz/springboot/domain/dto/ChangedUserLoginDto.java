@@ -4,13 +4,15 @@ public class ChangedUserLoginDto {
 
     private String oldLogin;
     private String newLogin;
+    private String password;
 
     public ChangedUserLoginDto() {
     }
 
-    public ChangedUserLoginDto(String oldLogin, String newLogin) {
+    public ChangedUserLoginDto(String oldLogin, String newLogin, String password) {
         this.oldLogin = oldLogin;
         this.newLogin = newLogin;
+        this.password = password;
     }
 
     public String getOldLogin() {
@@ -27,5 +29,13 @@ public class ChangedUserLoginDto {
 
     public void setNewLogin(String newLogin) {
         this.newLogin = newLogin;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

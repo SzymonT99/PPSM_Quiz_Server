@@ -9,7 +9,7 @@ public class ChangedUserPasswordDto {
     public ChangedUserPasswordDto() {
     }
 
-    public ChangedUserPasswordDto(String oldPassword, String newPassword, String login) {
+    public ChangedUserPasswordDto( String login, String oldPassword, String newPassword) {
         this.login = login;
         this.oldPassword = oldPassword;
         this.newPassword = newPassword;

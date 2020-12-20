@@ -6,17 +6,15 @@ public class UserResultDto {
 
     private String login;
     private Integer points;
-    private Date date;
     private Integer correctAnswer;
     private Integer incorrectAnswer;
 
     public UserResultDto() {
     }
 
-    public UserResultDto(String login, Integer points, Date date, Integer correctAnswer, Integer incorrectAnswer) {
+    public UserResultDto(String login, Integer points, Integer correctAnswer, Integer incorrectAnswer) {
         this.login = login;
         this.points = points;
-        this.date = date;
         this.correctAnswer = correctAnswer;
         this.incorrectAnswer = incorrectAnswer;
     }
@@ -37,13 +35,6 @@ public class UserResultDto {
         this.points = points;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
 
     public Integer getCorrectAnswer() {
         return correctAnswer;

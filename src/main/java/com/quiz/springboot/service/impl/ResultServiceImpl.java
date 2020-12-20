@@ -1,22 +1,18 @@
 package com.quiz.springboot.service.impl;
 
+import com.quiz.springboot.domain.dto.QuizResult;
 import com.quiz.springboot.domain.dto.UserResultDto;
 import com.quiz.springboot.domain.model.Result;
 import com.quiz.springboot.domain.model.Statistics;
 import com.quiz.springboot.domain.model.User;
 import com.quiz.springboot.repository.ResultRepository;
-import com.quiz.springboot.repository.StatisticsRepository;
 import com.quiz.springboot.repository.UserRepository;
 import com.quiz.springboot.service.ResultService;
 import com.quiz.springboot.service.StatisticsService;
-import jdk.nashorn.internal.objects.NativeJSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,6 +29,7 @@ public class ResultServiceImpl implements ResultService {
 
     @Override
     public List<Result> getResults() {
+
         return resultRepository.findAll();
     }
 
@@ -57,15 +54,31 @@ public class ResultServiceImpl implements ResultService {
 
         }
 
-        return ranking.stream()
-                .sorted(Comparator.comparing(Result::getPoints).reversed()).collect(Collectors.toList());
+        return ranking
+                .stream().sorted(Comparator.comparing(Result::getPoints).reversed()).collect(Collectors.toList());
+
+    }
+
+    @Override
+    public List<QuizResult> getRanking() {
+
+
+        List<Result> ranking = getBestResultUsers();
+
+        List<QuizResult> rankingResponse = new ArrayList<>();
+
+        for (Result res : ranking) {
+            rankingResponse.add(new QuizResult(res.getUser().getLogin(), res.getPoints(), res.getDate()));
+        }
+
+        return rankingResponse;
     }
 
     @Override
     public void saveCurrentResult(UserResultDto userResult) {
 
         User user = userRepository.findByLogin(userResult.getLogin());
-        Result result = new Result(user, userResult.getPoints(), userResult.getDate());
+        Result result = new Result(user, userResult.getPoints(), new Date());
         resultRepository.save(result);
 
         Statistics statistics = user.getStats();

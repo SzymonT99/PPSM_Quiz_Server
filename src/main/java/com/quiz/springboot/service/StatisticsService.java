@@ -14,7 +14,7 @@ public interface StatisticsService {
 
     void updateNumberGames(Statistics statistics);
 
-    Statistics getUserStatistics(Long id);
+    Statistics getUserStatistics(String nick);
 
     List<Statistics> getStatistics();
 

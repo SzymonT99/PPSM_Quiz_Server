@@ -1,8 +1,10 @@
 package com.quiz.springboot.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @Entity
 @Table(name = "questions")
@@ -14,28 +16,14 @@ public class Question {
 
     private String content;
 
-    @NotNull
     private String category;
 
-    @NotEmpty
-    @Column(name = "answer_a")
-    private String answerA;
+    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+    private Set<Answer> answers;
 
     @NotNull
-    @Column(name = "answer_b")
-    private String answerB;
-
-    @NotNull
-    @Column(name = "answer_c")
-    private String answerC;
-
-    @NotNull
-    @Column(name = "answer_d")
-    private String answerD;
-
-    @NotNull
-    @Column(name = "correct_answer")
-    private Integer correctAnswer;
+    private Integer seconds;
 
     @NotNull
     private boolean available;
@@ -43,20 +31,16 @@ public class Question {
     private Integer points;
 
 
+
     public Question() {
     }
 
-    public Question(@NotNull String content,String category, @NotEmpty String answerA,
-                    @NotNull String answerB, @NotNull String answerC, @NotNull String answerD,
-                    @NotNull Integer correctAnswer, @NotNull boolean available, Integer points) {
+    public Question(String content, String category,
+                    @NotNull Integer seconds, @NotNull boolean available, Integer points) {
         this.id = id;
         this.content = content;
         this.category = category;
-        this.answerA = answerA;
-        this.answerB = answerB;
-        this.answerC = answerC;
-        this.answerD = answerD;
-        this.correctAnswer = correctAnswer;
+        this.seconds = seconds;
         this.available = available;
         this.points = points;
     }
@@ -85,44 +69,20 @@ public class Question {
         this.category = category;
     }
 
-    public String getAnswerA() {
-        return answerA;
+    public Set<Answer> getAnswers() {
+        return answers;
     }
 
-    public void setAnswerA(String answerA) {
-        this.answerA = answerA;
+    public void setAnswers(Set<Answer> answers) {
+        this.answers = answers;
     }
 
-    public String getAnswerB() {
-        return answerB;
+    public Integer getSeconds() {
+        return seconds;
     }
 
-    public void setAnswerB(String answerB) {
-        this.answerB = answerB;
-    }
-
-    public String getAnswerC() {
-        return answerC;
-    }
-
-    public void setAnswerC(String answerC) {
-        this.answerC = answerC;
-    }
-
-    public String getAnswerD() {
-        return answerD;
-    }
-
-    public void setAnswerD(String answerD) {
-        this.answerD = answerD;
-    }
-
-    public Integer getCorrectAnswer() {
-        return correctAnswer;
-    }
-
-    public void setCorrectAnswer(Integer correctAnswer) {
-        this.correctAnswer = correctAnswer;
+    public void setSeconds(Integer seconds) {
+        this.seconds = seconds;
     }
 
     public boolean isAvailable() {
@@ -139,20 +99,5 @@ public class Question {
 
     public void setPoints(Integer points) {
         this.points = points;
-    }
-
-    @Override
-    public String toString() {
-        return "Question{" +
-                "id=" + id +
-                ", content='" + content + '\'' +
-                ", answerA='" + answerA + '\'' +
-                ", answerB='" + answerB + '\'' +
-                ", answerC='" + answerC + '\'' +
-                ", answerD='" + answerD + '\'' +
-                ", correctAnswer=" + correctAnswer +
-                ", available=" + available +
-                ", points=" + points +
-                '}';
     }
 }

@@ -24,10 +24,12 @@ public class QuestionController {
     private QuestionService questionService;
 
 
-    @GetMapping("/questions")
-    public ResponseEntity<List<Question>> getQuestions() {
+    @GetMapping("/questions/{state}")
+    public ResponseEntity<List<Question>> getQuestions(@PathVariable("state") boolean active) {
 
-        return new ResponseEntity<>(questionService.getQuestions(), HttpStatus.OK);
+        return active
+                ? new ResponseEntity<>(questionService.getQuestions(true), HttpStatus.OK)
+                : new ResponseEntity<>(questionService.getQuestions(false), HttpStatus.OK);
     }
 
     @PostMapping("/add-question")

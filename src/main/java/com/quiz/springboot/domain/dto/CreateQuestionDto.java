@@ -8,18 +8,20 @@ public class CreateQuestionDto {
     private String answerB;
     private String answerC;
     private String answerD;
+    private Integer seconds;
     private Integer correctAnswer;
 
     public CreateQuestionDto() {
     }
 
-    public CreateQuestionDto(String login, String content, String answerA, String answerB, String answerC, String answerD, Integer correctAnswer) {
+    public CreateQuestionDto(String login, String content, String answerA, String answerB, String answerC, String answerD, Integer seconds, Integer correctAnswer) {
         this.login = login;
         this.content = content;
         this.answerA = answerA;
         this.answerB = answerB;
         this.answerC = answerC;
         this.answerD = answerD;
+        this.seconds = seconds;
         this.correctAnswer = correctAnswer;
     }
 
@@ -71,6 +73,14 @@ public class CreateQuestionDto {
         this.answerD = answerD;
     }
 
+    public Integer getSeconds() {
+        return seconds;
+    }
+
+    public void setSeconds(Integer seconds) {
+        this.seconds = seconds;
+    }
+
     public Integer getCorrectAnswer() {
         return correctAnswer;
     }
@@ -78,5 +88,4 @@ public class CreateQuestionDto {
     public void setCorrectAnswer(Integer correctAnswer) {
         this.correctAnswer = correctAnswer;
     }
-
 }

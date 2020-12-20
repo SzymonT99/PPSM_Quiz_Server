@@ -111,17 +111,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean updateUserLogin(ChangedUserLoginDto changedUserLogin) {
 
-        if (changedUserLogin.getOldLogin() != null && changedUserLogin.getNewLogin() != null) {
+        User user = userRepository.findByLogin(changedUserLogin.getOldLogin());
 
-            User user = userRepository.findByLogin(changedUserLogin.getOldLogin());
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+
+        if (!bCryptPasswordEncoder.matches(changedUserLogin.getPassword(), user.getPassword())) {
+            return false;
+        }
+        else {
+
             user.setLogin(changedUserLogin.getNewLogin());
-
             userRepository.save(user);
 
             return true;
-        } else {
-            return false;
         }
+
     }
 
     @Override
@@ -129,11 +133,13 @@ public class UserServiceImpl implements UserService {
 
         User user = userRepository.findByLogin(changedUserPassword.getLogin());
 
-        if (!user.getPassword().equals(changedUserPassword.getOldPassword())) {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+
+        if (!bCryptPasswordEncoder.matches(changedUserPassword.getOldPassword(), user.getPassword())) {
             return false;
         } else {
 
-            user.setPassword(changedUserPassword.getNewPassword());
+            user.setPassword(bCryptPasswordEncoder.encode(changedUserPassword.getNewPassword()));
             userRepository.save(user);
             return true;
         }
@@ -145,8 +151,9 @@ public class UserServiceImpl implements UserService {
 
         User user = userRepository.findByLogin(deleteUser.getLogin());
 
-        if (!user.getPassword().equals(deleteUser.getPassword())) {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
+        if (!bCryptPasswordEncoder.matches(deleteUser.getPassword(), user.getPassword())) {
             return false;
         } else {
 

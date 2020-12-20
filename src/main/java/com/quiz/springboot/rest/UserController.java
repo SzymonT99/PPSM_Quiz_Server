@@ -72,7 +72,7 @@ public class UserController {
     @PutMapping("/user-update/password")
     public ResponseEntity<Void> updatePassword(@Valid @RequestBody ChangedUserPasswordDto changedUserLoginDto) {
 
-        LOGGER.info("--- old login: {}", changedUserLoginDto.getLogin());
+        LOGGER.info("--- login: {}", changedUserLoginDto.getLogin());
 
         boolean status = userService.updateUserPassword(changedUserLoginDto);
 

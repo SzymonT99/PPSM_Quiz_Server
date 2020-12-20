@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface QuestionService {
 
-    List<Question> getQuestions();
+    List<Question> getQuestions(boolean active);
 
     Question getQuestionById(Long id);
 
