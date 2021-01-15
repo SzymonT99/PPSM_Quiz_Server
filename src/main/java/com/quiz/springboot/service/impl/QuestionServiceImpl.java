@@ -14,6 +14,7 @@ import com.quiz.springboot.service.StatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -47,11 +48,12 @@ public class QuestionServiceImpl implements QuestionService {
         if (createQuestion.getAnswerA() != null && createQuestion.getAnswerB() != null &&
                 createQuestion.getAnswerC() != null && createQuestion.getAnswerD() != null &&
                 createQuestion.getContent() != null && createQuestion.getSeconds() != null &&
-                createQuestion.getCorrectAnswer() != null){
+                createQuestion.getCorrectAnswer() != null && createQuestion.getLogin() != null){
 
             if (userRepository.existsByLogin(createQuestion.getLogin())) {
 
-                Question addedQuestion = new Question(createQuestion.getContent(), null, createQuestion.getSeconds(), false, 0);
+                Question addedQuestion = new Question(createQuestion.getContent(), null, createQuestion.getSeconds(),
+                        false, 0, createQuestion.getLogin());
                 questionRepository.save(addedQuestion);
 
                 Answer answer1 = new Answer(createQuestion.getAnswerA(), false, addedQuestion);
@@ -84,12 +86,10 @@ public class QuestionServiceImpl implements QuestionService {
                 return true;
             }
             else{
-                System.out.println("tu1");
                 return false;
             }
 
         }
-        System.out.println("tu2");
         return false;
     }
 
@@ -103,7 +103,25 @@ public class QuestionServiceImpl implements QuestionService {
                 updatedQuestion.setAvailable(true);
                 updatedQuestion.setCategory(specifyQuestionDto.getCategory());
                 updatedQuestion.setPoints(specifyQuestionDto.getPoints());
+                updatedQuestion.setContent(specifyQuestionDto.getContent());
+                updatedQuestion.setSeconds(specifyQuestionDto.getSeconds());
+
+                List<String> answersCont = new ArrayList<>();
+                answersCont.add(specifyQuestionDto.getAnswerA());
+                answersCont.add(specifyQuestionDto.getAnswerB());
+                answersCont.add(specifyQuestionDto.getAnswerC());
+                answersCont.add(specifyQuestionDto.getAnswerD());
+
+                int i = 0;
+                for (Answer answer : updatedQuestion.getAnswers()) {
+                    answer.setAnswer(answersCont.get(i));
+                    answerRepository.save(answer);
+                    i++;
+                }
+
                 questionRepository.save(updatedQuestion);
+
+                return true;
             }
             else {
                 return false;

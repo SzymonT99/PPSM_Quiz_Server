@@ -48,7 +48,7 @@ public class QuestionController {
                 : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @PostMapping("/question-accepted/{id}")
+    @PutMapping("/question-accepted/{id}")
     public ResponseEntity<Void> postQuestion(@PathVariable("id") Long id_question,
                                              @RequestBody SpecifyQuestionDto specifyQuestionDto) {
 

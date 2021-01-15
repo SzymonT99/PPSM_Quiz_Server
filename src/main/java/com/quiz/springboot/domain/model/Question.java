@@ -1,7 +1,5 @@
 package com.quiz.springboot.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
@@ -30,19 +28,23 @@ public class Question {
 
     private Integer points;
 
+    private String author;
+
 
 
     public Question() {
     }
 
     public Question(String content, String category,
-                    @NotNull Integer seconds, @NotNull boolean available, Integer points) {
+                    @NotNull Integer seconds, @NotNull boolean available,
+                    Integer points, String author) {
         this.id = id;
         this.content = content;
         this.category = category;
         this.seconds = seconds;
         this.available = available;
         this.points = points;
+        this.author = author;
     }
 
     public Long getId() {
@@ -99,5 +101,13 @@ public class Question {
 
     public void setPoints(Integer points) {
         this.points = points;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 }
