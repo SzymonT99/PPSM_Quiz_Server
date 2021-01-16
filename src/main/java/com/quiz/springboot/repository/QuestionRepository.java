@@ -13,4 +13,8 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 
     List<Question> findByAvailableOrderByPointsAsc(boolean state);
 
+    boolean existsByAuthor(String userName);
+
+    List<Question> findAllByAuthor(String userName);
+
 }

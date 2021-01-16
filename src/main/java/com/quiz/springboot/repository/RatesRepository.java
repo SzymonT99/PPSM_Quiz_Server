@@ -15,5 +15,7 @@ public interface RatesRepository extends JpaRepository<Rates, Long> {
     int getBadRates();
 
     boolean existsByUserName(String userName);
+
+    Rates findByUserName(String userName);
 }
 

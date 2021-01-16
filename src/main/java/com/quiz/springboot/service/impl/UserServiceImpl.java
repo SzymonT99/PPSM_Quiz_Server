@@ -1,10 +1,9 @@
 package com.quiz.springboot.service.impl;
 
 import com.quiz.springboot.domain.dto.*;
-import com.quiz.springboot.domain.model.AuthorizationStatus;
-import com.quiz.springboot.domain.model.Roles;
-import com.quiz.springboot.domain.model.Statistics;
-import com.quiz.springboot.domain.model.User;
+import com.quiz.springboot.domain.model.*;
+import com.quiz.springboot.repository.QuestionRepository;
+import com.quiz.springboot.repository.RatesRepository;
 import com.quiz.springboot.repository.StatisticsRepository;
 import com.quiz.springboot.repository.UserRepository;
 import com.quiz.springboot.service.UserService;
@@ -25,10 +24,16 @@ public class UserServiceImpl implements UserService {
     private Integer MAX_LOGIN_ATTEMPTS = 5;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    StatisticsRepository statisticsRepository;
+    private StatisticsRepository statisticsRepository;
+
+    @Autowired
+    private RatesRepository ratesRepository;
+
+    @Autowired
+    private QuestionRepository questionRepository;
 
     @Override
     public List<User> getUsers() {
@@ -122,6 +127,20 @@ public class UserServiceImpl implements UserService {
 
             user.setLogin(changedUserLogin.getNewLogin());
             userRepository.save(user);
+
+            if (ratesRepository.existsByUserName(changedUserLogin.getOldLogin())){
+                Rates rates = ratesRepository.findByUserName(changedUserLogin.getOldLogin());
+                rates.setUserName(changedUserLogin.getNewLogin());                      // aktualizacja loga w ocenach aplikacji
+                ratesRepository.save(rates);
+            }
+
+            if (questionRepository.existsByAuthor(changedUserLogin.getOldLogin())){
+                List<Question> authorQuestions = questionRepository.findAllByAuthor(changedUserLogin.getOldLogin());
+                for (Question question : authorQuestions) {
+                    question.setAuthor(changedUserLogin.getNewLogin());                 // akualizacja nazwy gracza przy dodanych pytaniach
+                    questionRepository.save(question);
+                }
+            }
 
             return true;
         }
